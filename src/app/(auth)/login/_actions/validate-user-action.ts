@@ -4,32 +4,34 @@ import mongoClient from "@/libs/mongoClient";
 import bcrypt from "bcrypt";
 import { redirect } from "next/navigation";
 
-export async function validateUser(data: FormData) {
+export async function validateUser(prevState: string, data: FormData) {
     try {
         await mongoClient.connect();
+
+        const userCollection = mongoClient.db().collection("user");
 
         const username = data.get('username')?.toString();
         const password = data.get('password')?.toString();
 
         if (!username || !password) {
-            return;
+            return "Don't leave the fields blank.";
         }
 
-        const user = await mongoClient.db().collection('user').findOne({
-            "username": username,
-        });
-
+        const user = await userCollection.findOne({ username: username });
         if (!user) {
-            return;
+            return "User does not exists.";
         }
 
         const isMatch = await bcrypt.compare(password, user.password);
         if (!isMatch) {
-            return;
+            return "Invalid credentials.";
         }
 
-        redirect("/dashboard/")        
+    } catch(error: any) {
+        return "Something went wrong.";
     } finally {
         await mongoClient.close();
     }
+    
+    redirect("/dashboard/");
 }
