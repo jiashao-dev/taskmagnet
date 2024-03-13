@@ -1,7 +1,7 @@
 'use client';
 
 import { useFormState } from "react-dom";
-import { validateUser } from "../_actions/validate-user-action";
+import { validateUser } from "../_actions/validate-user";
 import { LoginButton } from "./LoginButton";
 
 export default function LoginForm() {

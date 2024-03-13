@@ -2,7 +2,7 @@
 
 import { Button } from "@/components/Button";
 import { useFormStatus } from "react-dom";
-import { logoutUser } from "../_actions/logout-actions";
+import { logoutUser } from "../_actions/logout";
 
 export function LogoutButton() {
     const { pending } = useFormStatus();
