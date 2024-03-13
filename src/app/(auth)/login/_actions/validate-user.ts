@@ -1,16 +1,34 @@
 'use server';
 
+import { FieldError, MessageState } from "@/libs/definitions";
 import mongoClient from "@/libs/mongoClient";
 import bcrypt from "bcrypt";
 import { cookies } from "next/headers";
 import { redirect } from "next/navigation";
 
-export async function validateUser(prevState: string, data: FormData) {
+export async function validateUser(prevState: MessageState, data: FormData) {
+    const res: MessageState = {
+        isError: true,
+        summary: "",
+    };
+
+    const fieldErrors: FieldError = {};
+
     const username = data.get('username')?.toString();
     const password = data.get('password')?.toString();
 
+    if (!username) {
+        fieldErrors.username = "Username is required.";
+    }
+
+    if (!password) {
+        fieldErrors.password = "Password is required.";
+    }
+
     if (!username || !password) {
-        return "Don't leave the fields blank.";
+        res.summary = "Don't leave the fields blank.";
+        res.errors = fieldErrors;
+        return res;
     }
 
     try {
@@ -18,19 +36,21 @@ export async function validateUser(prevState: string, data: FormData) {
 
         const userCollection = mongoClient.db().collection("user");
 
-
         const user = await userCollection.findOne({ username: username });
         if (!user) {
-            return "User does not exists.";
+            res.summary = "User does not exists.";
+            return res;
         }
 
         const isMatch = await bcrypt.compare(password, user.password);
         if (!isMatch) {
-            return "Invalid credentials.";
+            res.summary = "Invalid credentials.";
+            return res;
         }
         
     } catch(error: any) {
-        return "Something went wrong.";
+        res.summary = "Something went wrong.";
+        return res;
     } finally {
         await mongoClient.close();
     }
