@@ -1,11 +1,11 @@
 'use client';
 
 import { useFormState } from "react-dom";
-import { registerUser } from "./_actions/register-user";
-import { RegisterButton } from "./_components/RegisterButton";
+import { validateUser } from "../_actions/validate-user-action";
+import { LoginButton } from "./LoginButton";
 
-export default function Page() {
-    const [message, dispatch] = useFormState(registerUser, "");
+export default function LoginForm() {
+    const [message, dispatch] = useFormState(validateUser, "");
 
     return (
         <form action={dispatch}>
@@ -18,7 +18,7 @@ export default function Page() {
                 <label htmlFor="password">Password</label>
                 <input type="password" name="password" placeholder="enter password" required aria-required />
             </div>
-            <RegisterButton />
+            <LoginButton />
         </form>
     )
 }

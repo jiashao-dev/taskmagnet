@@ -8,7 +8,7 @@ export function RegisterButton() {
 
     return (
         <Button disabled={pending} aria-disabled={pending}>
-            {pending ? "Registering..." : "Register"}
+            Register
         </Button>
     )
 }
