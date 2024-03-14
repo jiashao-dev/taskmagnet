@@ -45,7 +45,7 @@ export default function LoginForm() {
                         {formState.errors?.username}
                     </label>
                 </div>
-                <div className="flex flex-col mb-5">
+                <div className="flex flex-col">
                     <label
                         htmlFor="password"
                         className="text-base text-gray-500 pb-2"

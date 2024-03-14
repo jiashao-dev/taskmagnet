@@ -4,7 +4,7 @@ import { RegisterForm } from "./_components/RegisterForm";
 export default function Page() {
     return (
         <div className="flex justify-center items-center h-screen">
-            <div className="w-1/2 h-full py-20 px-40">
+            <div className="w-1/2 h-full py-14 px-40">
                 <div className="w-full mb-2">
                     <h2 className="text-xl font-bold text-blue-700">TaskMagnet</h2>
                 </div>

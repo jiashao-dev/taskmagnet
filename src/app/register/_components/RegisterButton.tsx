@@ -10,7 +10,7 @@ export function RegisterButton() {
         <Button
             disabled={pending}
             aria-disabled={pending}
-            className="w-full py-3 border rounded-lg bg-blue-700 text-white font-medium hover:bg-blue-500"
+            className="w-full py-3 border rounded-lg bg-blue-700 text-white font-medium mt-5 hover:bg-blue-500"
         >
             Register
         </Button>

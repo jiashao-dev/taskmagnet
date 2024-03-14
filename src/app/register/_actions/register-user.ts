@@ -14,6 +14,7 @@ export async function registerUser(prevState: MessageState, formData: FormData) 
 
     const username = formData.get('username')?.toString();
     const password = formData.get('password')?.toString();
+    const email = formData.get('email')?.toString();
 
     if (!username) {
         fieldErrors.username = "Username is required.";
@@ -23,7 +24,11 @@ export async function registerUser(prevState: MessageState, formData: FormData) 
         fieldErrors.password = "Password is required.";
     }
 
-    if (!username || !password) {
+    if (!email) {
+        fieldErrors.email = "Email is required.";
+    }
+
+    if (!username || !password || !email) {
         res.isError = true;
         res.summary = "Don't leave the fields blank.";
         res.errors = fieldErrors;
@@ -35,7 +40,12 @@ export async function registerUser(prevState: MessageState, formData: FormData) 
 
         const userCollections = mongoClient.db().collection("user");
 
-        const user = await userCollections.findOne({ username: username }, { projection: { _id: 1 }});
+        const user = await userCollections.findOne({
+            "$or": [
+                { "username": username },
+                { "email": email },
+            ],
+        }, { projection: { _id: 1 }});
         if (user) {
             res.isError = true;
             res.summary = "Account exists.";
@@ -45,6 +55,7 @@ export async function registerUser(prevState: MessageState, formData: FormData) 
         const hashedPass = await bcrypt.hash(password, 10);
         await userCollections.insertOne({
             username: username,
+            email: email,
             password: hashedPass,
         });
 

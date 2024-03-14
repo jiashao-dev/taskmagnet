@@ -45,7 +45,31 @@ export function RegisterForm() {
                         {formState.errors?.username}
                     </label>
                 </div>
-                <div className="flex flex-col mb-5">
+                <div className="flex flex-col">
+                    <label
+                        htmlFor="email"
+                        className="text-base text-gray-500 pb-2"
+                    >
+                        Email
+                    </label>
+                    <input 
+                        type="email"
+                        name="email"
+                        placeholder="Enter your email"
+                        required
+                        aria-required
+                        className={clsx("w-full px-5 py-3 border rounded-lg text-gray-700 focus:outline-gray-500", {
+                            "border-red-500": formState.errors?.email,
+                        })}
+                    />
+                    <label
+                        htmlFor="email"
+                        className="text-xs text-red-500 pt-1"
+                    >
+                        {formState.errors?.email}
+                    </label>
+                </div>
+                <div className="flex flex-col">
                     <label
                         htmlFor="password"
                         className="text-base text-gray-500 pb-2"
