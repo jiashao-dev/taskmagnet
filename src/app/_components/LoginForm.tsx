@@ -4,12 +4,13 @@ import { useFormState } from "react-dom";
 import { validateUser } from "../_actions/validate-user";
 import { LoginButton } from "./LoginButton";
 import clsx from "clsx";
+import { MessageState } from "@/libs/definitions";
 
 export default function LoginForm() {
     const [formState, dispatch] = useFormState(validateUser, {
-        summary: "Welcome back! Please enter your details.",
+        summary: "Welcome back!",
         isError: false,
-    });
+    } satisfies MessageState);
 
     return (
         <div>

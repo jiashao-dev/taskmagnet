@@ -8,5 +8,5 @@ export async function logoutUser() {
         cookies().delete('user');
     }
 
-    redirect("/login/");
+    redirect("/");
 }
