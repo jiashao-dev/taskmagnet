@@ -24,8 +24,11 @@ export async function registerUser(prevState: MessageState, formData: FormData) 
         fieldErrors.password = "Password is required.";
     }
 
+    const emailRegex: RegExp = /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
     if (!email) {
         fieldErrors.email = "Email is required.";
+    } else if (!emailRegex.test(email)) {
+        fieldErrors.email = "Invalid email format.";
     }
 
     if (!username || !password || !email) {
