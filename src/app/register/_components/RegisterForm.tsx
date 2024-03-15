@@ -2,7 +2,7 @@
 
 import { useFormState } from "react-dom";
 import { registerUser } from "../_actions/register-user";
-import { MessageState } from "@/libs/definitions";
+import { MessageState } from "@/utils/definitions";
 import clsx from "clsx";
 import { SubmitButton } from "@/components/SubmitButton";
 

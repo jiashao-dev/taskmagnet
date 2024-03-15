@@ -3,7 +3,7 @@
 import { useFormState } from "react-dom";
 import { validateUser } from "../_actions/validate-user";
 import clsx from "clsx";
-import { MessageState } from "@/libs/definitions";
+import { MessageState } from "@/utils/definitions";
 import { SubmitButton } from "@/components/SubmitButton";
 
 export default function LoginForm() {

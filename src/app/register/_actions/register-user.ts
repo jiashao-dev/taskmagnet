@@ -1,7 +1,7 @@
 'use server'
 
-import { FieldError, MessageState } from "@/libs/definitions";
-import mongoClient from "@/libs/mongoClient"
+import { FieldError, MessageState } from "@/utils/definitions";
+import mongoClient from "@/utils/mongoClient"
 import bcrypt from "bcrypt";
 
 export async function registerUser(prevState: MessageState, formData: FormData) {

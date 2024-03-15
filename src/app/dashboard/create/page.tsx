@@ -1,14 +1,17 @@
+import { SubmitButton } from "../../../components/SubmitButton";
+import { addTask } from "./_actions/taskAction";
+
 export default function Page() {
     return (
-        <form>
+        <form action={addTask}>
             <div>
                 <label htmlFor="title">Title</label>
                 <input
                     id="title"
                     type="text"
                     name="title"
-                    required
-                    aria-required
+                    // required
+                    // aria-required
                 />
                 <label htmlFor="title">error title</label>
             </div>
@@ -22,9 +25,7 @@ export default function Page() {
                 <input
                     id="due-date"
                     type="date"
-                    name="due-date"
-                    required
-                    aria-required
+                    name="dueDate"
                 />
                 <label htmlFor="due-date">error due-date</label>
             </div>
@@ -37,6 +38,7 @@ export default function Page() {
                             type="radio"
                             name="priority"
                             value={"low"}
+                            defaultChecked
                         />
                         <label htmlFor="low-priority">Low</label>
                     </div>
@@ -62,6 +64,24 @@ export default function Page() {
                     </div>
                 </div>
             </fieldset>
+            <div>
+                <label htmlFor="category">Category</label>
+                <select id="category" name="category" defaultValue={"personal"}>
+                    <option disabled>Select category</option>
+                    <option value="personal">Personal</option>
+                    <option value="work">Work</option>
+                    <option value="home">Home</option>
+                </select>
+            </div>
+            <div>
+                <label htmlFor="tag">Tag</label>
+                <input
+                    id="tag"
+                    type="text"
+                    name="tag"
+                />
+            </div>
+            <SubmitButton title="Add Task" />
         </form>
     );
 }

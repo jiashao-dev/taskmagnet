@@ -1,7 +1,7 @@
 'use server';
 
-import { FieldError, MessageState } from "@/libs/definitions";
-import mongoClient from "@/libs/mongoClient";
+import { FieldError, MessageState } from "@/utils/definitions";
+import mongoClient from "@/utils/mongoClient";
 import bcrypt from "bcrypt";
 import { cookies } from "next/headers";
 import { redirect } from "next/navigation";
