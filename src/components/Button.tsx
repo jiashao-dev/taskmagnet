@@ -1,7 +1,5 @@
-import clsx from "clsx";
-
-interface ButtonProps extends React.ButtonHTMLAttributes<HTMLButtonElement> {
-    children: React.ReactNode;
+export interface ButtonProps extends React.ButtonHTMLAttributes<HTMLButtonElement> {
+    children?: React.ReactNode;
 }
 
 export function Button({
@@ -10,12 +8,7 @@ export function Button({
     ...props
 }: ButtonProps) {
     return (
-        <button
-            {...props}
-            className={clsx(
-                className
-            )}
-        >
+        <button className={className} {...props}>
             {children}
         </button>
     );

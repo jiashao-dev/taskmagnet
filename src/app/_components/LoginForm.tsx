@@ -2,9 +2,9 @@
 
 import { useFormState } from "react-dom";
 import { validateUser } from "../_actions/validate-user";
-import { LoginButton } from "./LoginButton";
 import clsx from "clsx";
 import { MessageState } from "@/libs/definitions";
+import { SubmitButton } from "@/components/SubmitButton";
 
 export default function LoginForm() {
     const [formState, dispatch] = useFormState(validateUser, {
@@ -69,7 +69,10 @@ export default function LoginForm() {
                         {formState.errors?.password}
                     </label>
                 </div>
-                <LoginButton />
+                <SubmitButton 
+                    title="Log In"
+                    className="w-full py-3 border rounded-lg bg-blue-700 text-white font-medium mt-5 hover:bg-blue-500"
+                />
             </form>
         </div>
     )

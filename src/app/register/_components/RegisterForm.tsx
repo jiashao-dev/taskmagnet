@@ -2,9 +2,9 @@
 
 import { useFormState } from "react-dom";
 import { registerUser } from "../_actions/register-user";
-import { RegisterButton } from "./RegisterButton";
 import { MessageState } from "@/libs/definitions";
 import clsx from "clsx";
+import { SubmitButton } from "@/components/SubmitButton";
 
 export function RegisterForm() {
     const [formState, dispatch] = useFormState(registerUser, {
@@ -93,7 +93,10 @@ export function RegisterForm() {
                         {formState.errors?.password}
                     </label>
                 </div>
-                <RegisterButton />
+                <SubmitButton 
+                    title="Register" 
+                    className="w-full py-3 border rounded-lg bg-blue-700 text-white font-medium mt-5 hover:bg-blue-500" 
+                />
             </form>
         </div>
     )
