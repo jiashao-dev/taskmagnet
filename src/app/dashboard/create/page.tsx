@@ -1,24 +1,34 @@
+'use client';
+
+import { useFormState } from "react-dom";
 import { SubmitButton } from "../../../components/SubmitButton";
-import { addTask } from "./_actions/taskAction";
+import { createTask } from "./_actions/taskAction";
+import { MessageState } from "@/utils/definitions";
+import { Button } from "@/components/Button";
 
 export default function Page() {
+    const [formState, dispatch] = useFormState(createTask, {
+        isError: false,
+        summary: "",
+    } satisfies MessageState);
+
     return (
-        <form action={addTask}>
+        <form action={dispatch}>
+            <p>{formState.summary}</p>
             <div>
                 <label htmlFor="title">Title</label>
                 <input
                     id="title"
                     type="text"
                     name="title"
-                    // required
-                    // aria-required
+                    required
+                    aria-required
                 />
-                <label htmlFor="title">error title</label>
+                <label htmlFor="title">{formState.errors?.title}</label>
             </div>
             <div>
                 <label htmlFor="description">Description</label>
                 <textarea id="description" name="description" rows={3} cols={50} />
-                <label htmlFor="description">error description</label>
             </div>
             <div>
                 <label htmlFor="due-date">Due date</label>
@@ -27,7 +37,6 @@ export default function Page() {
                     type="date"
                     name="dueDate"
                 />
-                <label htmlFor="due-date">error due-date</label>
             </div>
             <fieldset>
                 <legend>Priority</legend>
@@ -40,7 +49,9 @@ export default function Page() {
                             value={"low"}
                             defaultChecked
                         />
-                        <label htmlFor="low-priority">Low</label>
+                        <label htmlFor="low-priority">
+                            Low
+                        </label>
                     </div>
                     <div>
                         <input
@@ -49,7 +60,9 @@ export default function Page() {
                             name="priority"
                             value={"medium"}
                         />
-                        <label htmlFor="medium-priority">Medium</label>
+                        <label htmlFor="medium-priority">
+                            Medium
+                        </label>
                     </div>
                     <div>
                         <input
@@ -74,12 +87,22 @@ export default function Page() {
                 </select>
             </div>
             <div>
-                <label htmlFor="tag">Tag</label>
-                <input
-                    id="tag"
-                    type="text"
-                    name="tag"
-                />
+                <div id="tag-container">
+                    <label htmlFor="tag">Tag</label>
+                    <input
+                        id="tag"
+                        type="text"
+                        name="tag"
+                    />
+                </div>
+                <Button type="button" onClick={() => {
+                    const newTag = document.createElement("input");
+                    newTag.setAttribute("id", "tag");
+                    newTag.setAttribute("name", "tag");
+                    newTag.setAttribute("type", "text");
+
+                    document.getElementById('tag-container')?.appendChild(newTag);
+                }}>Add tag</Button>
             </div>
             <SubmitButton title="Add Task" />
         </form>
