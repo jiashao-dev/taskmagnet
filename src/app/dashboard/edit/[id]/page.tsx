@@ -1,16 +1,22 @@
-'use client';
+'use client'
 
-import { useFormState } from "react-dom";
-import { MessageState } from "@/utils/definitions";
 import { Button } from "@/components/Button";
 import { SubmitButton } from "@/components/SubmitButton";
-import { createTask } from "../_actions/taskAction";
+import { useFormState } from "react-dom";
+import { editTask } from "../../create/_actions/taskAction";
+import { MessageState } from "@/utils/definitions";
+import { useState } from "react";
 
-export function TaskCreationForm() {
-    const [formState, dispatch] = useFormState(createTask, {
+export default function Page({ params }: {
+    params: {
+        id: string;
+    }
+}) {
+    const [formState, dispatch] = useFormState(editTask, {
         isError: false,
         summary: "",
     } satisfies MessageState);
+    const [tags, setTags] = useState<{  }[]>([])
 
     return (
         <div>
