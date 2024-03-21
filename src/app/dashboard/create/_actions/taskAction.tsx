@@ -3,6 +3,7 @@
 import { FieldError, MessageState, Task } from "@/utils/definitions";
 import mongoClient from "@/utils/mongoClient";
 import { ObjectId } from "mongodb";
+import { revalidatePath } from "next/cache";
 import { cookies } from "next/headers";
 import { redirect } from "next/navigation";
 import "server-only";
@@ -87,6 +88,24 @@ export async function getTasks(user: string | undefined) {
     }
 }
 
+export async function getTask(taskId: string) {
+    try {
+        await mongoClient.connect();
+
+        const taskCollection = mongoClient.db().collection('task');
+
+        const res = await taskCollection.findOne<Task>({
+            _id: new ObjectId(taskId),
+        }, { projection: { _id: 0 } });
+
+        return res;
+    } catch (err) {
+        console.error(err);
+    } finally {
+        await mongoClient.close()
+    }
+}
+
 export async function editTask(prevState: MessageState, formData: FormData) {
     const username = cookies().get('user')?.value;
     if (!username) {
@@ -109,7 +128,7 @@ export async function editTask(prevState: MessageState, formData: FormData) {
         return res;
     }
 
-    const taskId = formData.get('id') as string;
+    const taskId = formData.get('taskId') as string;
     const title = formData.get('title') as string;
     const description = formData.get('description') as string;
     const dueDate = formData.get('dueDate') as string;
@@ -123,7 +142,7 @@ export async function editTask(prevState: MessageState, formData: FormData) {
         await mongoClient.connect();
         const taskCollection = mongoClient.db().collection('task');
 
-        const task = await taskCollection.findOne({_id: new ObjectId(taskId)})
+        const task = await taskCollection.findOne({ _id: new ObjectId(taskId) })
         if (!task) {
             res.isError = true;
             res.summary = "this task not exist";
@@ -139,12 +158,12 @@ export async function editTask(prevState: MessageState, formData: FormData) {
             belongsTo: username,
         };
 
-        await taskCollection.findOneAndReplace({ 
-            _id: { 
-                taskId,
-            }
+        await taskCollection.findOneAndReplace({
+            _id: new ObjectId(taskId),
         }, newTask);
         res.summary = "Task replaced.";
+
+        revalidatePath('/dashboard');
         return res;
     } catch (error) {
         res.isError = true;
