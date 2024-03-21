@@ -2,6 +2,7 @@ import { cookies } from "next/headers";
 import { LogoutButton } from "./_components/LogoutButton";
 import { getTasks } from "./create/_actions/taskAction";
 import Link from "next/link";
+import { DeleteTaskButton } from "./_components/DeleteButton";
 
 export default async function Page() {
     const user = cookies().get('user');
@@ -24,6 +25,7 @@ export default async function Page() {
                                     <li>category: {task.category}</li>
                                     <li>priority: {task.priority}</li>
                                     <Link href={`/dashboard/edit/${task._id}`}>Edit</Link>
+                                    <DeleteTaskButton taskId={task._id.toString()} />
                                 </ul>
                             </li>
                         );

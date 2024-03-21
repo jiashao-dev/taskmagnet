@@ -7,6 +7,7 @@ import { revalidatePath } from "next/cache";
 import { cookies } from "next/headers";
 import { redirect } from "next/navigation";
 import "server-only";
+import { takeCoverage } from "v8";
 
 export async function createTask(prevState: MessageState, formData: FormData) {
     const username = cookies().get('user')?.value;
@@ -169,6 +170,25 @@ export async function editTask(prevState: MessageState, formData: FormData) {
         res.isError = true;
         res.summary = "Something went wrong";
         return res;
+    } finally {
+        await mongoClient.close();
+    }
+}
+
+export async function deleteTask(id: string | ObjectId) {
+    const taskId = typeof id === 'string' ? new ObjectId(id) : id;
+
+    try {
+        await mongoClient.connect();
+        
+        const taskCollection = mongoClient.db().collection('task');
+        await taskCollection.findOneAndDelete({
+            _id: taskId
+        });
+
+        revalidatePath('/dashboard');
+    } catch(err) {
+        console.error(err);
     } finally {
         await mongoClient.close();
     }
