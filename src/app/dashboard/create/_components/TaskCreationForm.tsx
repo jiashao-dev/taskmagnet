@@ -13,72 +13,104 @@ export function TaskCreationForm() {
     } satisfies MessageState);
 
     return (
-        <div>
+        <div className="bg-slate-100">
             <p>{formState.summary}</p>
-            <form action={dispatch} className="flex flex-col items-start content-around">
-                <div className="flex flex-col w-full">
-                    <label htmlFor="title">Title</label>
+            <form
+                action={dispatch}
+                className="flex flex-col items-start content-around p-5 size-full gap-4"
+            >
+                <div className="flex flex-col w-full gap-1">
                     <input
                         id="title"
                         type="text"
                         name="title"
-                        placeholder="Enter your task name"
+                        placeholder="Enter your task name ..."
                         required
                         aria-required
-                        className="w-full"
+                        className="w-full border-0 outline-0 text-2xl font-bold bg-slate-100"
                     />
                     <label htmlFor="title">{formState.errors?.title}</label>
                 </div>
-                <div className="flex flex-col">
-                    <label htmlFor="description">Description (optional)</label>
+                <div className="flex flex-col w-full">
                     <textarea
                         id="description"
                         name="description"
-                        rows={3}
-                        cols={50}
                         placeholder="Enter description"
+                        style={{ resize: "none" }}
+                        className="w-full h-32 p-4 border-0 outline-0 rounded-lg"
                     />
                 </div>
-                <div className="flex flex-col">
-                    <label htmlFor="due-date">Due date (optional)</label>
-                    <input
-                        id="due-date"
-                        type="date"
-                        name="dueDate"
-                    />
-                </div>
-                <div className="flex flex-col">
-                    <label htmlFor="priority">Priority</label>
-                    <select id="priority" name="priority" defaultValue={"low"}>
-                        <option disabled>Select priority</option>
-                        <option value="low">Low</option>
-                        <option value="medium">Medium</option>
-                        <option value="high">High</option>
-                    </select>
-                </div>
-                <div className="flex flex-col">
-                    <label htmlFor="category">Category</label>
-                    <select id="category" name="category" defaultValue={"personal"}>
-                        <option disabled>Select category</option>
-                        <option value="personal">Personal</option>
-                        <option value="work">Work</option>
-                        <option value="home">Home</option>
-                    </select>
-                </div>
-                <div className="flex flex-col">
-                    <div id="tag-container" className="flex flex-col">
-                        <label htmlFor="tag">Tag (optional)</label>
-                        <input id="tag" type="text" name="tag" />
-                    </div>
-                    <Button type="button" onClick={() => {
-                        const newTag = document.createElement("input");
-                        newTag.setAttribute("id", "tag");
-                        newTag.setAttribute("name", "tag");
-                        newTag.setAttribute("type", "text");
-
-                        document.getElementById('tag-container')?.appendChild(newTag);
-                    }}>Add tag</Button>
-                </div>
+                <section className="flex flex-col w-full bg-white p-4 rounded-lg gap-2">
+                    <header className="py-2">
+                        <h2 className="text-lg font-bold">Task settings</h2>
+                    </header>
+                    <section className="flex flex-col w-full gap-2 py-2">
+                        <label
+                            htmlFor="category"
+                            className="font-semibold text-gray-500"
+                        >
+                            Category
+                        </label>
+                        <select
+                            id="category"
+                            name="category"
+                            defaultValue={"personal"}
+                            className="w-fit outline-none border-none"
+                        >
+                            <option disabled>Select category</option>
+                            <option value="personal">Personal</option>
+                            <option value="work">Work</option>
+                            <option value="home">Home</option>
+                        </select>
+                    </section>
+                    <div className="border"></div>
+                    <section className="flex flex-col w-full gap-2 py-2">
+                        <label
+                            htmlFor="priority"
+                            className="font-semibold text-gray-500"
+                        >
+                            Priority
+                        </label>
+                        <select
+                            id="priority"
+                            name="priority"
+                            defaultValue={"low"}
+                            className="w-fit outline-none border-none"
+                        >
+                            <option disabled>Select priority</option>
+                            <option value="low">Low</option>
+                            <option value="medium">Medium</option>
+                            <option value="high">High</option>
+                        </select>
+                    </section>
+                    <div className="border"></div>
+                    <section className="flex flex-col w-full gap-2 py-2">
+                        <label
+                            htmlFor="due-date"
+                            className="font-semibold text-gray-500"
+                        >
+                            Due date
+                        </label>
+                        <input
+                            id="due-date"
+                            type="date"
+                            name="dueDate"
+                            className="w-fit outline-none border-none"
+                        />
+                    </section>
+                    <div className="border"></div>
+                    <section className="flex flex-col w-full gap-2 py-2">
+                        <label className="font-semibold text-gray-500">
+                            Tag
+                        </label>
+                        <Button
+                            type="button"
+                            className="w-fit border text-gray-500 text-sm py-1 px-2 rounded-md"
+                        >
+                            + Add tag
+                        </Button>
+                    </section>
+                </section>
                 <SubmitButton title="Add Task" />
             </form>
         </div>
