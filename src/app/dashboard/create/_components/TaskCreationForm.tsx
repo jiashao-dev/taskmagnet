@@ -2,9 +2,9 @@
 
 import { useFormState } from "react-dom";
 import { MessageState } from "@/utils/definitions";
-import { Button } from "@/components/Button";
 import { SubmitButton } from "@/components/SubmitButton";
 import { createTask } from "../_actions/taskAction";
+import { TagInput } from "./TagInput";
 
 export function TaskCreationForm() {
     const [formState, dispatch] = useFormState(createTask, {
@@ -103,12 +103,7 @@ export function TaskCreationForm() {
                         <label className="font-semibold text-gray-500">
                             Tag
                         </label>
-                        <Button
-                            type="button"
-                            className="w-fit border text-gray-500 text-sm py-1 px-2 rounded-md"
-                        >
-                            + Add tag
-                        </Button>
+                        <TagInput />
                     </section>
                 </section>
                 <SubmitButton title="Add Task" />
