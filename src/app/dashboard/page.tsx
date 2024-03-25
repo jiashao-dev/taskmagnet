@@ -1,5 +1,4 @@
 import { cookies } from "next/headers";
-import { LogoutButton } from "./_components/LogoutButton";
 import { getTasks } from "./create/_actions/taskAction";
 import Link from "next/link";
 import { DeleteTaskButton } from "./_components/DeleteButton";
@@ -9,9 +8,8 @@ export default async function Page() {
     const res = await getTasks(user?.value);
 
     return (
-        <main>
-            <Link href={"/dashboard/create"}>Add task</Link>
-            <LogoutButton />
+        <main className="w-full">
+            <Link href={"/dashboard/create"}>Add Task</Link>
             <p>Hello, {user?.value}</p>
             {res ? (
                 <ul>
