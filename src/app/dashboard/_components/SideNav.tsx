@@ -18,7 +18,7 @@ export function SideNav() {
                     TaskMagnet
                 </Link>
                 <ul className="h-full flex flex-col py-4">
-                    <li className={clsx("w-full py-3 px-5 hover:bg-slate-100", {
+                    <li role="link" className={clsx("w-full py-3 px-5 hover:bg-slate-100", {
                         ["bg-slate-100"]: pathname === "/dashboard",
                     })}>
                         <Link href={"/dashboard"}>
