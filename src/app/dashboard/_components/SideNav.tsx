@@ -9,7 +9,7 @@ export function SideNav() {
     const pathname = usePathname();
 
     return (
-        <aside className="h-screen w-40 border-r">
+        <aside className="h-full w-40 border-r">
             <nav className="size-full flex flex-col py-4">
                 <Link
                     href={"/dashboard/"}

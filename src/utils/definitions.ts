@@ -11,11 +11,13 @@ export interface MessageState {
 }
 
 export interface Task {
+    id?: ObjectId,
     title: string;
     description?: string;
     dueDate?: Date;
     priority?: string;
     category?: string;
     tags?: string[];
-    belongsTo: string,
+    belongsTo: string;
+    status: "pending" | "completed";
 }

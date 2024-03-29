@@ -45,6 +45,7 @@ export function TagInput() {
                         label={tag} 
                         dismissible={true}
                         handleRemove={() => handleRemoveTag(idx)}
+                        size="normal"
                     />
                     <input
                         type="hidden"

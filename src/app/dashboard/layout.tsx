@@ -5,9 +5,9 @@ export default function Layout({ children }: {
     children: ReactNode;
 }) {
     return (
-        <div className="flex size-screen">
+        <div className="flex size-full">
             <SideNav />
-            <div className="size-full">
+            <div className="size-full size-">
                 {children}
             </div>
         </div>

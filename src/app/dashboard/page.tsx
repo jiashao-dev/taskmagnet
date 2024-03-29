@@ -1,35 +1,62 @@
 import { cookies } from "next/headers";
 import { getTasks } from "./create/_actions/taskAction";
+import { ReactNode } from "react";
+import { TaskItem } from "./_components/TaskItem";
 import Link from "next/link";
-import { DeleteTaskButton } from "./_components/DeleteButton";
 
 export default async function Page() {
     const user = cookies().get('user');
-    const res = await getTasks(user?.value);
+    const todos = await getTasks(user?.value);
+
+    let list: ReactNode;
+
+    if (!todos || todos.length <= 0) {
+        list = (
+            <p>No task. Add <Link className="text-blue-500 hover:underline" href={"/dashboard/create"}>new task</Link> now.</p>
+        )
+    } else {
+        list = todos.sort((a, b) => {
+            if (!a.dueDate && !b.dueDate) {
+                return 0
+            }
+
+            if (!a.dueDate) {
+                return 1
+            }
+
+            if (!b.dueDate) {
+                return -1
+            }
+
+            return a.dueDate.getTime() - b.dueDate.getTime();
+        }).map(todo => {
+            return (
+                <li
+                    key={todo.id?.toString()}
+                    className="py-1"
+                >
+                    <TaskItem task={todo} />
+                </li>
+            );
+        })
+    }
 
     return (
-        <main className="w-full">
-            <Link href={"/dashboard/create"}>Add Task</Link>
-            <p>Hello, {user?.value}</p>
-            {res ? (
-                <ul>
-                    {res?.map(task => {
-                        return (
-                            <li key={task._id.toString()} className="border border-black">
-                                <ul>
-                                    <li>title: {task.title}</li>
-                                    <li>description: {task.description}</li>
-                                    <li>duedate: {task.dueDate?.toString()}</li>
-                                    <li>category: {task.category}</li>
-                                    <li>priority: {task.priority}</li>
-                                    <Link href={`/dashboard/edit/${task._id}`}>Edit</Link>
-                                    <DeleteTaskButton taskId={task._id.toString()} />
-                                </ul>
-                            </li>
-                        );
-                    })}
-                </ul>
-            ) : null}
-        </main>
+        <div className="size-full flex flex-col bg-slate-100">
+            <header className="w-full py-4 px-8 mb-2">
+                <h1 className="font-semibold">
+                    <span className="text-blue-800 text-xl">Hello</span>, {user?.value}
+                </h1>
+            </header>
+            <main className="p-5 size-full">
+                <div className="bg-white p-4 rounded-lg flex flex-col">
+                    {todos ? (
+                        <ul className="divide-y">
+                            {list}
+                        </ul>
+                    ): list}
+                </div>
+            </main>
+        </div>
     );
 }
