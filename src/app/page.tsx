@@ -4,7 +4,7 @@ import LoginForm from "./_components/LoginForm";
 export default function Page() {
     return (
         <div className="flex justify-center items-center h-screen">
-            <div className="w-1/2 h-full py-20 px-40">
+            <div className="lg:w-1/2 h-full py-20 px-40">
                 <div className="w-full mb-2">
                     <h2 className="text-xl font-bold text-blue-700">TaskMagnet</h2>
                 </div>
@@ -27,7 +27,6 @@ export default function Page() {
                     </p>
                 </div>
             </div>
-            <div className="bg-blue-700 w-1/2 h-full"></div>
         </div>
     )
 }
