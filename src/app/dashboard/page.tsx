@@ -29,10 +29,10 @@ export default async function Page() {
             }
 
             return a.dueDate.getTime() - b.dueDate.getTime();
-        }).map(todo => {
+        }).map((todo, idx) => {
             return (
                 <li
-                    key={todo.id?.toString()}
+                    key={todo._id ? todo._id.toString() : idx}
                     className="py-1"
                 >
                     <TaskItem task={todo} />

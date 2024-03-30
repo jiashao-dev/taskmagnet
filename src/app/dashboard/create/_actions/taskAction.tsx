@@ -2,7 +2,6 @@
 
 import { FieldError, MessageState, Task } from "@/utils/definitions";
 import mongoClient from "@/utils/mongoClient";
-import { ObjectId } from "mongodb";
 import { revalidatePath } from "next/cache";
 import { cookies } from "next/headers";
 import { redirect } from "next/navigation";
@@ -43,7 +42,7 @@ export async function createTask(prevState: MessageState, formData: FormData) {
         await mongoClient.connect();
         const taskCollection = mongoClient.db().collection('task');
 
-        const newTask: Task = {
+        await taskCollection.insertOne({
             title: title,
             description: description,
             dueDate: dueDate ? new Date(dueDate) : undefined,
@@ -52,9 +51,8 @@ export async function createTask(prevState: MessageState, formData: FormData) {
             tags: tag.length > 0 ? tag : undefined,
             belongsTo: username,
             status: "pending",
-        };
+        });
 
-        await taskCollection.insertOne(newTask);
         res.summary = "Task created.";
         revalidatePath("/dashboard");
         return res;
@@ -79,6 +77,7 @@ export async function getTasks(user: string | undefined) {
 
         let tasks = [];
         for await (const doc of res) {
+            doc._id = doc._id?.toString()
             tasks.push(doc);
         }
 

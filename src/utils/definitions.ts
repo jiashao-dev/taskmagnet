@@ -11,7 +11,7 @@ export interface MessageState {
 }
 
 export interface Task {
-    id?: ObjectId,
+    _id?: string,
     title: string;
     description?: string;
     dueDate?: Date;
