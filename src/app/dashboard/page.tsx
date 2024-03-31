@@ -29,20 +29,22 @@ export default async function Page() {
             }
 
             return a.dueDate.getTime() - b.dueDate.getTime();
-        }).map((todo, idx) => {
+        }).map((todo) => {
             return (
                 <li
-                    key={todo._id ? todo._id.toString() : idx}
+                    key={todo._id!.toString()}
                     className="py-1"
                 >
-                    <TaskItem task={todo} />
+                    <Link href={`/dashboard/edit/${todo._id}`}>
+                        <TaskItem task={todo} />
+                    </Link>
                 </li>
             );
         })
     }
 
     return (
-        <div className="size-full flex flex-col bg-slate-100">
+        <div className="size-full flex flex-col">
             <header className="w-full py-4 px-8 mb-2">
                 <h1 className="font-semibold">
                     <span className="text-blue-800 text-xl">Hello</span>, {user?.value}

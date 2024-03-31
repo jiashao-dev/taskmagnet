@@ -7,7 +7,7 @@ export default function Layout({ children }: {
     return (
         <div className="flex size-full">
             <SideNav />
-            <div className="size-full size-">
+            <div className="size-full bg-slate-100">
                 {children}
             </div>
         </div>

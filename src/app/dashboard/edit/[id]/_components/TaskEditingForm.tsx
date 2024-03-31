@@ -5,10 +5,11 @@ import { MessageState, Task } from "@/utils/definitions";
 import { Button } from "@/components/Button";
 import { SubmitButton } from "@/components/SubmitButton";
 import { editTask } from "@/app/dashboard/create/_actions/taskAction";
+import { TagInput } from "@/app/dashboard/create/_components/TagInput";
 
 export function TaskEditingForm({ task, taskId }: {
-     task: Task;
-     taskId: string;
+    task: Task;
+    taskId: string;
 }) {
     const [formState, dispatch] = useFormState(editTask, {
         isError: false,
@@ -16,88 +17,102 @@ export function TaskEditingForm({ task, taskId }: {
     } satisfies MessageState);
 
     return (
-        <div>
+        <form
+            action={dispatch}
+            className="flex flex-col items-start content-around p-5 size-full gap-4"
+        >
             <p>{formState.summary}</p>
-            <form action={dispatch} className="flex flex-col items-start content-around">
-                <input name="taskId" type="hidden" value={taskId} />
-                <div className="flex flex-col w-full">
-                    <label htmlFor="title">Title</label>
-                    <input
-                        id="title"
-                        type="text"
-                        name="title"
-                        placeholder="Enter your task name"
-                        required
-                        aria-required
-                        className="w-full"
-                        defaultValue={task.title}
-                    />
-                    <label htmlFor="title">{formState.errors?.title}</label>
-                </div>
-                <div className="flex flex-col">
-                    <label htmlFor="description">Description (optional)</label>
-                    <textarea
-                        id="description"
-                        name="description"
-                        rows={3}
-                        cols={50}
-                        placeholder="Enter description"
-                        defaultValue={task.description}
-                    />
-                </div>
-                <div className="flex flex-col">
-                    <label htmlFor="due-date">Due date (optional)</label>
-                    <input
-                        id="due-date"
-                        type="date"
-                        name="dueDate"
-                        defaultValue={task.dueDate?.toString()}
-                    />
-                </div>
-                <div className="flex flex-col">
-                    <label htmlFor="priority">Priority</label>
-                    <select id="priority" name="priority" defaultValue={task.priority}>
-                        <option disabled>Select priority</option>
-                        <option value="low">Low</option>
-                        <option value="medium">Medium</option>
-                        <option value="high">High</option>
-                    </select>
-                </div>
-                <div className="flex flex-col">
-                    <label htmlFor="category">Category</label>
-                    <select id="category" name="category" defaultValue={task.category}>
+            <div className="flex flex-col w-full gap-1">
+                <input
+                    id="title"
+                    type="text"
+                    name="title"
+                    placeholder="Enter your task name"
+                    required
+                    aria-required
+                    className="w-full border-0 outline-0 text-2xl font-bold bg-slate-100"
+                    defaultValue={task.title}
+                />
+                <label htmlFor="title">{formState.errors?.title}</label>
+            </div>
+            <div className="flex flex-col w-full">
+                <textarea
+                    id="description"
+                    name="description"
+                    placeholder="Enter description"
+                    defaultValue={task.description}
+                    style={{ resize: "none" }}
+                    className="w-full h-32 p-4 border-0 outline-0 rounded-lg"
+                />
+            </div>
+            <section className="flex flex-col w-full bg-white p-4 rounded-lg gap-2">
+                <header className="py-2">
+                    <h2 className="text-lg font-bold">Task settings</h2>
+                </header>
+                <section className="flex flex-col w-full gap-2 py-2">
+                    <label
+                        htmlFor="category"
+                        className="font-semibold text-gray-500"
+                    >
+                        Category
+                    </label>
+                    <select
+                        id="category"
+                        name="category"
+                        defaultValue={"personal"}
+                        className="w-fit outline-none border-none"
+                    >
                         <option disabled>Select category</option>
                         <option value="personal">Personal</option>
                         <option value="work">Work</option>
                         <option value="home">Home</option>
                     </select>
-                </div>
-                <div className="flex flex-col">
-                    <div id="tag-container" className="flex flex-col">
-                        <label htmlFor="tag">Tag (optional)</label>
-                        {task.tags?.map((tag, idx) => {
-                            return (
-                                <input 
-                                    key={idx} 
-                                    id="tag" 
-                                    type="text" 
-                                    name="tag"
-                                    defaultValue={tag}
-                                />
-                            )
-                        })}
-                    </div>
-                    <Button type="button" onClick={() => {
-                        const newTag = document.createElement("input");
-                        newTag.setAttribute("id", "tag");
-                        newTag.setAttribute("name", "tag");
-                        newTag.setAttribute("type", "text");
-
-                        document.getElementById('tag-container')?.appendChild(newTag);
-                    }}>Add tag</Button>
-                </div>
-                <SubmitButton title="Edit Task" />
-            </form>
-        </div>
+                </section>
+                <div className="border"></div>
+                <section className="flex flex-col w-full gap-2 py-2">
+                    <label
+                        htmlFor="priority"
+                        className="font-semibold text-gray-500"
+                    >
+                        Priority
+                    </label>
+                    <select
+                        id="priority"
+                        name="priority"
+                        defaultValue={task.priority}
+                        className="w-fit outline-none border-none"
+                    >
+                        <option disabled>Select priority</option>
+                        <option value="low">Low</option>
+                        <option value="medium">Medium</option>
+                        <option value="high">High</option>
+                    </select>
+                </section>
+                <div className="border"></div>
+                <section className="flex flex-col w-full gap-2 py-2">
+                    <label
+                        htmlFor="due-date"
+                        className="font-semibold text-gray-500"
+                    >
+                        Due date
+                    </label>
+                    <input
+                        id="due-date"
+                        type="date"
+                        name="dueDate"
+                        className="w-fit outline-none border-none"
+                        defaultValue={task.dueDate?.toString()}
+                    />
+                </section>
+                <div className="border"></div>
+                <section className="flex flex-col w-full gap-2 py-2">
+                    <label className="font-semibold text-gray-500">
+                        Tag
+                    </label>
+                    <TagInput tagsProp={task.tags}/>
+                </section>
+            </section>
+            <SubmitButton title="Save" className="bg-blue-500 text-white px-4 py-1 rounded-lg self-end hover:bg-blue-700" />
+        </form>
     );
 }

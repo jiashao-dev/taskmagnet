@@ -4,9 +4,13 @@ import { Button } from "@/components/Button";
 import { Fragment, KeyboardEvent, useState } from "react";
 import { Pill } from "./Pill";
 
-export function TagInput() {
+export function TagInput({
+    tagsProp
+}: {
+    tagsProp?: string[];
+}) {
     const [show, setShow] = useState(false);
-    const [tags, setTags] = useState<string[]>([]);
+    const [tags, setTags] = useState<string[]>(tagsProp ?? []);
 
     function handleClick() {
         setShow(true);
