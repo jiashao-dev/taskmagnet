@@ -8,7 +8,7 @@ import { cookies } from "next/headers";
 import { redirect } from "next/navigation";
 import "server-only";
 
-export async function createTask(prevState: MessageState, formData: FormData) {
+export async function createTask(_: MessageState, formData: FormData) {
     const username = cookies().get('user')?.value;
     if (!username) {
         redirect("/");
@@ -108,7 +108,7 @@ export async function getTask(taskId: string) {
     }
 }
 
-export async function editTask(prevState: MessageState, formData: FormData) {
+export async function editTask(taskId: string, _: MessageState, formData: FormData) {
     const username = cookies().get('user')?.value;
     if (!username) {
         redirect("/");
@@ -130,7 +130,6 @@ export async function editTask(prevState: MessageState, formData: FormData) {
         return res;
     }
 
-    const taskId = formData.get('taskId') as string;
     const title = formData.get('title') as string;
     const description = formData.get('description') as string;
     const dueDate = formData.get('dueDate') as string;
@@ -144,10 +143,13 @@ export async function editTask(prevState: MessageState, formData: FormData) {
         await mongoClient.connect();
         const taskCollection = mongoClient.db().collection('task');
 
-        const task = await taskCollection.findOne({ _id: new ObjectId(taskId) })
+        const task = await taskCollection.findOne({ 
+            "_id": new ObjectId(taskId) 
+        })
         if (!task) {
             res.isError = true;
             res.summary = "this task not exist";
+            return res;
         }
 
         const newTask: Task = {
@@ -161,9 +163,10 @@ export async function editTask(prevState: MessageState, formData: FormData) {
             status: "pending",
         };
 
-        await taskCollection.findOneAndReplace({
+        let a = await taskCollection.findOneAndReplace({
             _id: new ObjectId(taskId),
         }, newTask);
+
         res.summary = "Task replaced.";
 
         revalidatePath('/dashboard');

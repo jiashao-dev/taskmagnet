@@ -4,14 +4,16 @@ import { useFormState } from "react-dom";
 import { MessageState, Task } from "@/utils/definitions";
 import { Button } from "@/components/Button";
 import { SubmitButton } from "@/components/SubmitButton";
-import { editTask } from "@/app/dashboard/create/_actions/taskAction";
+import { deleteTask, editTask } from "@/app/dashboard/create/_actions/taskAction";
 import { TagInput } from "@/app/dashboard/create/_components/TagInput";
 
 export function TaskEditingForm({ task, taskId }: {
     task: Task;
     taskId: string;
 }) {
-    const [formState, dispatch] = useFormState(editTask, {
+    const editTaskWithId = editTask.bind(null, taskId)
+
+    const [formState, dispatch] = useFormState(editTaskWithId, {
         isError: false,
         summary: "",
     } satisfies MessageState);
@@ -112,7 +114,10 @@ export function TaskEditingForm({ task, taskId }: {
                     <TagInput tagsProp={task.tags}/>
                 </section>
             </section>
-            <SubmitButton title="Save" className="bg-blue-500 text-white px-4 py-1 rounded-lg self-end hover:bg-blue-700" />
+            <div className="w-full flex flex-row gap-2">
+                <SubmitButton type="submit" title="Save" className="bg-blue-500 text-white px-4 py-1 rounded-lg hover:bg-blue-700" />
+                <SubmitButton type="button" title="Delete" className="bg-red-500 text-white px-4 py-1 rounded-lg hover:bg-red-700" onClick={() => deleteTask(taskId)} />
+            </div>
         </form>
     );
 }
