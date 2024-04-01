@@ -105,7 +105,7 @@ export function TaskCreationForm() {
                     <TagInput />
                 </section>
             </section>
-            <SubmitButton title="Save" className="bg-blue-500 text-white px-4 py-1 rounded-lg self-end hover:bg-blue-700" />
+            <SubmitButton title="Save" className="bg-blue-500 text-white px-4 py-1 rounded-lg hover:bg-blue-700" />
         </form>
     );
 }

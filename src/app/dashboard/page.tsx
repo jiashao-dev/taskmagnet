@@ -35,9 +35,7 @@ export default async function Page() {
                     key={todo._id!.toString()}
                     className="py-1"
                 >
-                    <Link href={`/dashboard/edit/${todo._id}`}>
                         <TaskItem task={todo} />
-                    </Link>
                 </li>
             );
         })

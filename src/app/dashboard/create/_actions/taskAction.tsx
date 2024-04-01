@@ -180,7 +180,11 @@ export async function editTask(taskId: string, _: MessageState, formData: FormDa
     }
 }
 
-export async function deleteTask(id: string | ObjectId) {
+export async function deleteTask(id: string | ObjectId | undefined) {
+    if (!id) {
+        return;
+    }
+
     const taskId = typeof id === 'string' ? new ObjectId(id) : id;
 
     try {
