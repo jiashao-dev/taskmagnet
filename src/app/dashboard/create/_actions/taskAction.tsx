@@ -6,6 +6,7 @@ import { ObjectId } from "mongodb";
 import { revalidatePath } from "next/cache";
 import { cookies } from "next/headers";
 import { redirect } from "next/navigation";
+import { type } from "os";
 import "server-only";
 
 export async function createTask(_: MessageState, formData: FormData) {
@@ -200,5 +201,34 @@ export async function deleteTask(id: string | ObjectId | undefined) {
         console.error(err);
     } finally {
         await mongoClient.close();
+    }
+}
+
+export async function completeTask(id: string | ObjectId | undefined, isCompleted: boolean) {
+    console.log("req")
+
+    if (!id) {
+        return
+    }
+
+    const taskId = typeof id === 'string' ? new ObjectId(id) : id
+
+    try {
+        await mongoClient.connect()
+        const taskCollection = mongoClient.db().collection('task')
+
+        await taskCollection.findOneAndUpdate({
+            _id: taskId
+        }, {
+            $set: {
+                status: isCompleted ? "completed" : "pending"
+            }
+        })
+
+        revalidatePath('/dashboard')
+    } catch(error) {
+        console.log(error)
+    } finally {
+        await mongoClient.close()
     }
 }

@@ -5,7 +5,7 @@ import { ChangeEvent, useState } from "react";
 import { Pill } from "../create/_components/Pill";
 import Link from "next/link";
 import { SubmitButton } from "@/components/SubmitButton";
-import { deleteTask } from "../create/_actions/taskAction";
+import { completeTask, deleteTask } from "../create/_actions/taskAction";
 
 export function TaskItem({
     task
@@ -22,7 +22,12 @@ export function TaskItem({
         : "Today";
 
     function handleInputChange(e: ChangeEvent) {
-        setIsCompleted(prevIsCompleted => !prevIsCompleted);
+        setIsCompleted(prevIsCompleted => {
+            const newComplete = !prevIsCompleted
+            completeTask(task._id, newComplete)
+
+            return newComplete
+        });
     }
 
     return (
@@ -32,6 +37,7 @@ export function TaskItem({
                     type="checkbox" 
                     checked={isCompleted}
                     onChange={handleInputChange}
+                    className="size-5 accent-blue-500"
                 />
             </div>
             <Link 
